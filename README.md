@@ -5,6 +5,7 @@ An RCON client for Source RCON Protocol (e.g. for CS:GO server) (https://develop
 ## cli usage
 
 ```
+export RCON_HOST=localhost RCON_PASSWORD=mypw RCON_PORT=27015
 deno run --allow-net --allow-env https://deno.land/x/deno_rcon/mod.ts
 ```
 
