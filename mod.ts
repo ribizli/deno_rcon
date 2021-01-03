@@ -19,5 +19,6 @@ if (import.meta.main) {
       console.error(e.message);
     }
   }
+  console.log(''); // to jump over prompt line
   rcon.disconnect();
 }
