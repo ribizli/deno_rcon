@@ -71,10 +71,6 @@ export class Rcon {
       for await (const chunk of Deno.iter(conn)) {
         this.readChunk(chunk);
       }
-    } catch (e) {
-      if (!(e instanceof Deno.errors.BadResource)) {
-        console.error('read error', e);
-      }
     } finally {
       if (this.conn === conn) {
         this.conn = undefined;
