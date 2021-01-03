@@ -88,7 +88,6 @@ export async function* terminal(prompt = "> ") {
       }
     }
   } finally {
-    console.log('set back to noRaw!');
     Deno.setRaw(Deno.stdin.rid, false);
   }
 }
