@@ -71,9 +71,9 @@ export async function* terminal(prompt = "> ") {
         ) {
           pos += key.left ? -1 : 1;
         } else if (chunk[0] > 27 && chunk[0] !== 127) {
-          const char = decoder.decode(chunk);
-          command = command.substr(0, pos) + char + command.substr(pos);
-          pos++;
+          const input = decoder.decode(chunk);
+          command = command.substr(0, pos) + input + command.substr(pos);
+          pos += input.length;
         } else {
           continue;
         }
