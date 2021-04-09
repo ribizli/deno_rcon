@@ -1,4 +1,4 @@
-import { concat, equal } from 'https://deno.land/std/bytes/mod.ts';
+import { concat, equals } from './deps.ts';
 
 const FrameBuffer = new Uint8Array([0, 1, 0, 0]);
 
@@ -119,7 +119,7 @@ export class Rcon {
 
             const request = this.requests.get(id);
             if (request) {
-              if (equal(FrameBuffer, payload)) {
+              if (equals(FrameBuffer, payload)) {
                 const str = new TextDecoder().decode(request.data);
                 request.resolve(str);
                 this.requests.delete(id);

@@ -1,6 +1,6 @@
 // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 
-import { equal } from "https://deno.land/std/bytes/mod.ts";
+import { equals } from './deps.ts';
 
 const ENTER = new Uint8Array([13]);
 const CTRL_C = new Uint8Array([3]);
@@ -32,14 +32,14 @@ export async function* terminal(prompt = "> ") {
     while (true) {
       for await (const chunk of Deno.iter(Deno.stdin)) {
         const key = {
-          enter: equal(chunk, ENTER),
-          up: equal(chunk, ARROW_UP),
-          down: equal(chunk, ARROW_DOWN),
-          left: equal(chunk, ARROW_LEFT),
-          right: equal(chunk, ARROW_RIGHT),
-          backspace: equal(chunk, BACKSPACE),
-          del: equal(chunk, DEL),
-          ctrlC: equal(chunk, CTRL_C),
+          enter: equals(chunk, ENTER),
+          up: equals(chunk, ARROW_UP),
+          down: equals(chunk, ARROW_DOWN),
+          left: equals(chunk, ARROW_LEFT),
+          right: equals(chunk, ARROW_RIGHT),
+          backspace: equals(chunk, BACKSPACE),
+          del: equals(chunk, DEL),
+          ctrlC: equals(chunk, CTRL_C),
         };
         if (key.enter) {
           console.log("");
