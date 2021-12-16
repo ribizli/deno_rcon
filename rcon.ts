@@ -1,4 +1,5 @@
 import { concat, equals } from './deps.ts';
+import { iterateReader } from 'https://deno.land/std@0.117.0/streams/conversion.ts';
 
 const FrameBuffer = new Uint8Array([0, 1, 0, 0]);
 
@@ -41,7 +42,7 @@ export class Rcon {
   constructor(
     private host = 'localhost',
     private port = 27015,
-    private password = '',
+    private password = ''
   ) {}
 
   sendCmd(cmd: string) {
@@ -68,7 +69,7 @@ export class Rcon {
   private async read() {
     const conn = this.conn!;
     try {
-      for await (const chunk of Deno.iter(conn)) {
+      for await (const chunk of iterateReader(conn)) {
         this.readChunk(chunk);
       }
     } finally {
