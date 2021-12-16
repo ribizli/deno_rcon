@@ -55,7 +55,7 @@ export class Rcon {
         hostname: this.host,
         port: this.port,
       });
-      this.read().catch(() => {});
+      void this.read();
       await this.sendData(
         new Uint8Array([0, 0, 0, 0]),
         this.password,
