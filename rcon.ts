@@ -52,11 +52,14 @@ export class Rcon {
   private async connect() {
     if (!this.conn) {
       this.authed = new ResolvablePromise();
+
       this.conn = await Deno.connect({
         hostname: this.host,
         port: this.port,
       });
+
       void this.read();
+
       await this.sendData(
         new Uint8Array([0, 0, 0, 0]),
         this.password,
@@ -108,9 +111,6 @@ export class Rcon {
         const id = dataView.getInt32(4, true);
         const type = dataView.getInt32(8, true);
         const payload = data.slice(12, 12 + len - 10);
-        /*console.log(
-          `payload size: ${payload.length}, id: ${id}, type: ${type}`
-        );*/
         if (id !== -1) {
           if (type === PacketType.RESPONSE_AUTH && id === 0) {
             this.authed?.resolve();
@@ -139,7 +139,6 @@ export class Rcon {
         // Keep the data of the chunk if it doesn't represent a full packet
         this.outstandingData = new Uint8Array(data.length);
         this.outstandingData.set(data, 0);
-        // console.log('outstanding data: ', this.outstandingData.length);
         break;
       }
     }
@@ -162,7 +161,6 @@ export class Rcon {
   }
 
   private async sendData(id: Uint8Array, data: string, packetType: number) {
-    // console.log('sending', id, data, packetType);
     const dataBuffer = new TextEncoder().encode(data);
     const dataLength = dataBuffer.length;
 
