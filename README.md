@@ -11,8 +11,8 @@ deno run --allow-net --allow-env --unstable https://deno.land/x/deno_rcon/mod.ts
 
 ## usage in code
 
-```
-import Rcon from 'https://deno.land/x/deno_rcon/mod.ts';
+```typescript
+import { Rcon } from 'https://deno.land/x/deno_rcon/mod.ts';
 
 const rcon = new Rcon('localhost', 27015, 'mypw');
 
