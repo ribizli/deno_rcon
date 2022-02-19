@@ -29,6 +29,17 @@ class ResolvablePromise {
   });
 }
 
+export interface Options {
+  /** Support multi-packet responses from the server. On by default.
+   * May be turned off in order to read responses from servers that
+   * don't support it, like Factorio. */
+  multiPacketResponses: boolean;
+}
+
+const defaultOptions: Options = {
+  multiPacketResponses: true
+};
+
 export class Rcon {
   private authed?: ResolvablePromise;
 
@@ -38,11 +49,16 @@ export class Rcon {
 
   private requests = new Map<number, Request>();
 
+  private options: Options;
+
   constructor(
     private host = 'localhost',
     private port = 27015,
     private password = '',
-  ) {}
+    options: Partial<Options> = {}
+  ) {
+    this.options = {...defaultOptions, ...options};
+  }
 
   sendCmd(cmd: string) {
     return this.send(cmd, PacketType.COMMAND);
@@ -119,7 +135,11 @@ export class Rcon {
 
             const request = this.requests.get(id);
             if (request) {
-              if (equals(FrameBuffer, payload)) {
+              if (!this.options.multiPacketResponses) {
+                const str = new TextDecoder().decode(payload);
+                request.resolve(str);
+                this.requests.delete(id);
+              } else if (equals(FrameBuffer, payload)) {
                 const str = new TextDecoder().decode(request.data);
                 request.resolve(str);
                 this.requests.delete(id);
