@@ -1,5 +1,4 @@
-import { concat, equals } from './deps.ts';
-import { iterateReader } from 'https://deno.land/std@0.117.0/streams/conversion.ts';
+import { concat, equals, iterateReader } from './deps.ts';
 
 const FrameBuffer = new Uint8Array([0, 1, 0, 0]);
 
@@ -74,7 +73,7 @@ export class Rcon {
         port: this.port,
       });
 
-      void this.read();
+      this.read().catch(() => {});
 
       await this.sendData(
         new Uint8Array([0, 0, 0, 0]),

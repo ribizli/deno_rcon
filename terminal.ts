@@ -1,6 +1,6 @@
 // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 
-import { equals } from './deps.ts';
+import { equals, iterateReader } from './deps.ts';
 
 const ENTER = new Uint8Array([13]);
 const CTRL_C = new Uint8Array([3]);
@@ -30,7 +30,7 @@ export async function* terminal(prompt = "> ") {
     await Deno.stdout.write(encoder.encode(prompt));
 
     while (true) {
-      for await (const chunk of Deno.iter(Deno.stdin)) {
+      for await (const chunk of iterateReader(Deno.stdin)) {
         const key = {
           enter: equals(chunk, ENTER),
           up: equals(chunk, ARROW_UP),
